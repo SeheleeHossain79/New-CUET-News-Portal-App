@@ -7,8 +7,8 @@ import {
   TextInput,
 } from "react-native";
 import { useEffect, useMemo, useState } from "react";
-import { router, usePathname } from "expo-router";
-import api from "../lib/api";
+import { router } from "expo-router";
+import api from "../../lib/api";
 
 type NewsItem = {
   id: number;
@@ -19,43 +19,45 @@ type NewsItem = {
 };
 
 export default function HomeScreen() {
-  const pathname = usePathname(); // e.g. "/", "/academic", "/events"
-  const currentCategory =
-    pathname === "/" ? "All" : pathname.replace("/", "");
-
   const [news, setNews] = useState<NewsItem[]>([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get("/news").then((res) => {
-      const formatted = res.data.map((item: any) => ({
-        id: item.id,
-        title: item.title,
-        summary:
-          typeof item.summary === "string" && item.summary.trim().length > 0
-            ? item.summary
-            : "AI summary not available",
-        category: item.category,
-        date: new Date(item.created_at).toDateString(),
-      }));
-      setNews(formatted);
-    });
+    api
+      .get("/news")
+      .then((res) => {
+        const formatted = res.data.map((item: any) => ({
+          id: item.id,
+          title: item.title,
+          summary:
+            typeof item.summary === "string" && item.summary.trim().length > 0
+              ? item.summary
+              : "AI summary not available",
+          category: item.category,
+          date: new Date(item.created_at).toDateString(),
+        }));
+        setNews(formatted);
+      })
+      .catch((err) => {
+        console.log("❌ News fetch error:", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
+  // 🔍 Home page = only search filter
   const filteredNews = useMemo(() => {
     return news.filter((item) => {
-      const matchCategory =
-        currentCategory === "All" ||
-        item.category.toLowerCase() === currentCategory.toLowerCase();
+      if (search.trim() === "") return true;
 
-      const matchSearch =
-        search.trim() === "" ||
+      return (
         item.title.toLowerCase().includes(search.toLowerCase()) ||
-        item.summary.toLowerCase().includes(search.toLowerCase());
-
-      return matchCategory && matchSearch;
+        item.summary.toLowerCase().includes(search.toLowerCase())
+      );
     });
-  }, [news, search, currentCategory]);
+  }, [news, search]);
 
   return (
     <View style={styles.container}>
@@ -71,7 +73,11 @@ export default function HomeScreen() {
         data={filteredNews}
         keyExtractor={(item) => item.id.toString()}
         ListEmptyComponent={
-          <Text style={styles.empty}>No news found.</Text>
+          loading ? (
+            <Text style={styles.empty}>Loading news...</Text>
+          ) : (
+            <Text style={styles.empty}>No news found.</Text>
+          )
         }
         renderItem={({ item }) => (
           <TouchableOpacity

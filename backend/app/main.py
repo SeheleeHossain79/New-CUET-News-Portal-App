@@ -1,49 +1,24 @@
-# from fastapi import FastAPI
-
-# app = FastAPI()
-
-# @app.get("/")
-# def root():
-#     return {"message": "CUET News Portal backend running"}
-
-
-# from fastapi import FastAPI
-# from app.database import engine
-# from sqlalchemy import text
-
-# app = FastAPI()
-
-# @app.get("/")
-# def root():
-#     with engine.connect() as conn:
-#         result = conn.execute(text("SELECT 1"))
-#     return {"message": "Database connected successfully"}
-
-# from fastapi import FastAPI
-# from app.database import engine
-# from app import models
-
-# app = FastAPI()
-
-# # 👇 This line creates tables
-# models.Base.metadata.create_all(bind=engine)
-
-# @app.get("/")
-# def root():
-#     return {"message": "CUET News Portal backend running with DB"}
-
 from fastapi import FastAPI
-from app.database import engine
-from app import models
-from app.routes import news
+from app.database import engine, Base
 
-app = FastAPI()
+# 🔥 IMPORTANT: models import (table creation er jonno)
+from app import models  
 
-models.Base.metadata.create_all(bind=engine)
+from app.routes import news, admin
 
+app = FastAPI(
+    title="CUET News Portal API",
+    description="Backend API for CUET News Portal with AI summary and admin authentication",
+    version="1.0.0",
+)
+
+# Create database tables (news + admins)
+Base.metadata.create_all(bind=engine)
+
+# Register routers
 app.include_router(news.router, prefix="/news", tags=["News"])
+app.include_router(admin.router, tags=["Admin"])
 
 @app.get("/")
 def root():
     return {"message": "CUET News Portal backend running"}
-
