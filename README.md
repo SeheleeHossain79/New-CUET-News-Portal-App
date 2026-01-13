@@ -48,3 +48,11 @@ npx expo install @react-native-async-storage/async-storage
 
 4️⃣ Expo server চালু করো (cache clear সহ)
 npx expo start -c
+
+
+For git push:
+
+git status
+git add .
+git commit -m "Describe your changes"
+git push
