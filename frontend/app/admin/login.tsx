@@ -13,7 +13,7 @@ import qs from "qs";
 import { saveToken } from "../../lib/auth";
 
 // 🔴 IMPORTANT: এখানে তোমার PC-এর IPv4 থাকবে
-const BACKEND_BASE_URL = "http://192.168.0.105:8000";
+const BACKEND_BASE_URL = "http://192.168.0.100:8000";
 
 export default function AdminLoginScreen() {
   const [email, setEmail] = useState("");

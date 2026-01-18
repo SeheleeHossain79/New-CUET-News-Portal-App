@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from app.database import engine, Base
 
+from app.routes import admin_activity
+
 # 🔥 IMPORTANT: models import (table creation er jonno)
 from app import models  
 
@@ -18,6 +20,8 @@ Base.metadata.create_all(bind=engine)
 # Register routers
 app.include_router(news.router, prefix="/news", tags=["News"])
 app.include_router(admin.router, tags=["Admin"])
+
+app.include_router(admin_activity.router)
 
 @app.get("/")
 def root():

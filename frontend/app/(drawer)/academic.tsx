@@ -16,6 +16,7 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
 import { useEffect, useMemo, useState } from "react";
 import { router } from "expo-router";
@@ -31,6 +32,7 @@ type NewsItem = {
 
 export default function AcademicScreen() {
   const [news, setNews] = useState<NewsItem[]>([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     api.get("/news").then((res) => {
@@ -49,13 +51,18 @@ export default function AcademicScreen() {
   }, []);
 
   const academicNews = useMemo(() => {
-    return news.filter(
-      (item) => item.category.toLowerCase() === "academic"
-    );
+    return news.filter((item) => item.category.toLowerCase() === "academic");
   }, [news]);
 
   return (
     <View style={styles.container}>
+      {/* 🔍 Search */}
+      <TextInput
+        placeholder="Search news..."
+        value={search}
+        onChangeText={setSearch}
+        style={styles.search}
+      />
       <FlatList
         data={academicNews}
         keyExtractor={(item) => item.id.toString()}
@@ -129,5 +136,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 40,
     color: "#777",
+  },
+  search: {
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginBottom: 16,
+    fontSize: 14,
+    borderColor: "#ddd",
+    borderWidth: 1,
   },
 });
