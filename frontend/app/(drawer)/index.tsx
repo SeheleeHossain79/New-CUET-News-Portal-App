@@ -258,6 +258,8 @@ import { useEffect, useMemo, useState, useRef } from "react";
 import { router, usePathname } from "expo-router";
 import api from "../../lib/api";
 import { Animated } from "react-native";
+import Footer from "../../components/Footer";
+
 
 type NewsItem = {
   id: number;
@@ -382,6 +384,7 @@ export default function HomeScreen() {
       <FlatList
         data={filteredNews}
         keyExtractor={(item) => item.id.toString()}
+        ListFooterComponent={<Footer />}
         contentContainerStyle={
           filteredNews.length === 0 ? { flex: 1 } : undefined
         }
