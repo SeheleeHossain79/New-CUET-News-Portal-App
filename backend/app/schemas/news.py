@@ -31,8 +31,10 @@ from typing import Optional
 class NewsBase(BaseModel):
     title: str
     content: str
+    summary: str
     category: str
     is_featured: bool = False
+    image: Optional[str] = None
 
 
 # ============================
@@ -64,4 +66,4 @@ class NewsResponse(NewsBase):
     created_at: datetime
 
     class Config:
-        from_attributes = True   # Pydantic v2 compatible
+        orm_mode = True   # Pydantic v2 compatible

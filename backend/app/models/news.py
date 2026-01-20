@@ -10,5 +10,6 @@ class News(Base):
     content = Column(Text, nullable=False)
     summary = Column(Text, nullable=True)
     category = Column(String, nullable=False)
+    image = Column(String, nullable=True)
     is_featured = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)

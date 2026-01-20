@@ -1,3 +1,4 @@
+// frontend/app/%28tabs%29/index.tsx
 import { Image } from 'expo-image';
 import { Platform, StyleSheet } from 'react-native';
 

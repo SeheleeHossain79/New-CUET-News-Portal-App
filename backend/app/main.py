@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from app.database import engine, Base
+from fastapi.staticfiles import StaticFiles
 
 from app.routes import admin_activity
 
@@ -13,6 +14,8 @@ app = FastAPI(
     description="Backend API for CUET News Portal with AI summary and admin authentication",
     version="1.0.0",
 )
+
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Create database tables (news + admins)
 Base.metadata.create_all(bind=engine)
