@@ -1,3 +1,10 @@
+At first , nijeder PC er command prompt e ipconfig ei command likhe IPv4 address ta ber korte hobe. Wireless wifi oi segment er niche pawa jabe IPv4 address. Oita copy kore duita file er IPv4 address er jaigai paste korte hobe. file gula hocche:
+frontend/lib/api.ts
+frontend/app/admin/login.tsx
+duita file e baseURL: "http://192.168.43.100:8000" eitar 192.168.43.100 jaigata replace korte hobe nijeder PC er ipv4 address diye. eita wifi lan change hole ba pc off korle change hoye jai. 
+
+Mobile app hisebe chalanor jnno mobile e Expo Go app ta install korte hobe.
+
 Backend Setup (FastAPI + PostgreSQL): 
 
 1️⃣ Backend folder-এ যাও
